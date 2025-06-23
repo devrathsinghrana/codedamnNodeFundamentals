@@ -47,27 +47,25 @@ const fsPromises = fs.promises;
 const addNumbers = (a, b) => a + b;
 
 const createFile = (fileName, fileContent) => {
-  fs.writeFile(fileName, fileContent, (err) => {
-    if (err) {
-      console.error("Error writing file:", err);
-    } else {
-      console.log(`File ${fileName} created successfully!`);
-    }
+  // we need to return it as a promise so that we can await it wherever we call this function
+  return new Promise((resolve, reject) => {
+    //writeFile is asynchronous so need to use callback here
+    fs.writeFile(fileName, fileContent, (err) => {
+      if (err) return reject(err);
+      console.log("file created successfully");
+      resolve();
+    });
   });
 };
 
 const readFileSynchronously = (fileName) => {
-  fs.readFileSync(fileName, "utf-8", (err, fileContent) => {
-    if (err) {
-      console.error("Error reading file:", err);
-    } else {
-      console.log(`File ${fileName} read successfully!`, fileContent);
-    }
-  });
+  // Using synchronous read
+  console.log(fs.readFileSync(fileName, "utf-8"));
 };
 
 const readDirectory = async (dirPath) => {
   try {
+    // Using promises to read directory asynchronously
     const files = await fsPromises.readdir(dirPath);
     console.log("Files in directory:", files);
   } catch (err) {

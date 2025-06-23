@@ -5,11 +5,5 @@ const { createFile, readFileSynchronously, readDirectory } = require("./utils");
   readFileSynchronously("newFile.txt");
   //   below two read directories synchronously
   readDirectory("./")
-  fs.readdirSync("./", (err, files) => {
-    if (err) {
-      console.error("Error reading directory:", err);
-    } else {
-      console.log("Files in directory 2:", files);
-    }
-  });
+  console.log(fs.readdirSync("./"));
 })();
