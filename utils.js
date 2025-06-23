@@ -40,18 +40,47 @@ module.exports.d = 40;
 
 Adds d: 40 to module.exports.
 */
+const fs = require("fs");
+const fsPromises = fs.promises;
+// const fs = require("fs/promises"); // Alternative way to import fs promises API
+
 const addNumbers = (a, b) => a + b;
 
-
-// exports = {
-//   c: 30,
-// };
-
-module.exports.addNumbers = addNumbers;
-module.exports = {
-//   ...module.exports,need to add this else above module.exports is overriden
-  a: 10,
+const createFile = (fileName, fileContent) => {
+  fs.writeFile(fileName, fileContent, (err) => {
+    if (err) {
+      console.error("Error writing file:", err);
+    } else {
+      console.log(`File ${fileName} created successfully!`);
+    }
+  });
 };
-exports.b = 20;
 
-module.exports.d = 40;
+const readFileSynchronously = (fileName) => {
+  fs.readFileSync(fileName, "utf-8", (err, fileContent) => {
+    if (err) {
+      console.error("Error reading file:", err);
+    } else {
+      console.log(`File ${fileName} read successfully!`, fileContent);
+    }
+  });
+};
+
+const readDirectory = async (dirPath) => {
+  try {
+    const files = await fsPromises.readdir(dirPath);
+    console.log("Files in directory:", files);
+  } catch (err) {
+    console.error("Error reading directory:", err);
+  }
+};
+
+module.exports = {
+  addNumbers,
+  createFile,
+  readFileSynchronously,
+  readDirectory,
+  a: 10,
+  b: 20,
+  d: 40,
+};
